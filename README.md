@@ -85,13 +85,13 @@ Use the commands below to activate .venv, and start the consumer.
 Windows:
 ```shell
 .venv\Scripts\activate
-py -m consumers.basic_json_consumer_case
+py -m consumers.basic_json_consumer_drake
 ```
 
 Mac/Linux:
 ```zsh
 source .venv/bin/activate
-python3 -m consumers.basic_json_consumer_case
+python3 -m consumers.basic_json_consumer_drake
 ```
 
 ### Review the Application Code
@@ -99,7 +99,9 @@ python3 -m consumers.basic_json_consumer_case
 Review the code for both the producer and the consumer. 
 Understand how the information is generated, written to a file, and read and processed. 
 Review the visualization code to see how the live chart is produced. 
-When done, remember to kill the associated terminals for the producer and consumer. 
+When done, remember to kill the associated terminals for the producer and consumer.
+
+I want to focus on the average message count per author. We will write code to calculate that. We will use a bar chart to visualize that. 
 
 
 ---
