@@ -44,6 +44,7 @@ logger.info(f"Data file: {DATA_FILE}")
 #####################################
 
 author_counts = defaultdict(int)
+total_messages = 0
 
 #####################################
 # Set up live visuals
@@ -59,22 +60,26 @@ plt.ion()  # Turn on interactive mode for live updates
 
 
 def update_chart():
-    """Update the live chart with the latest author counts."""
+    """Update the live chart with the latest average message count per author."""
     # Clear the previous chart
     ax.clear()
 
     # Get the authors and counts from the dictionary
     authors_list = list(author_counts.keys())
-    counts_list = list(author_counts.values())
+    if total_messages == 0:
+        return 
+    
+    # Find the average count per author
+    avg_counts_list = [count / total_messages for count in author_counts.values()]
 
     # Create a bar chart using the bar() method.
     # Pass in the x list, the y list, and the color
-    ax.bar(authors_list, counts_list, color="green")
+    ax.bar(authors_list, avg_counts_list, color="green")
 
     # Use the built-in axes methods to set the labels and title
     ax.set_xlabel("Authors")
-    ax.set_ylabel("Message Counts")
-    ax.set_title("Basic Real-Time Author Message Counts")
+    ax.set_ylabel("Average Message Counts")
+    ax.set_title("Average Messages Per Author")
 
     # Use the set_xticklabels() method to rotate the x-axis labels
     # Pass in the x list, specify the rotation angle is 45 degrees,
@@ -104,6 +109,7 @@ def process_message(message: str) -> None:
     Args:
         message (str): The JSON message as a string.
     """
+    global total_messages 
     try:
         # Log the raw message for debugging
         logger.debug(f"Raw message: {message}")
@@ -123,8 +129,12 @@ def process_message(message: str) -> None:
             # Increment the count for the author
             author_counts[author] += 1
 
+            # Message Counts
+            total_messages += 1 
+
             # Log the updated counts
             logger.info(f"Updated author counts: {dict(author_counts)}")
+            logger.info(f"Total messages processed: {total_messages}")
 
             # Update the chart
             update_chart()
